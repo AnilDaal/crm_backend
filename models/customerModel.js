@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-const CustomerSchema = mongoose.Schema({
+const CustomerSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -17,7 +17,6 @@ const CustomerSchema = mongoose.Schema({
     },
     phone:{
         type:Number,
-        required:true
     },
     country:{
         type:String
