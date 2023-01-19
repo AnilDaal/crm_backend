@@ -10,10 +10,10 @@ router.post('/add_customer',customerController.insertCustomer)
 router.get('/get_customer',customerController.getCustomer)
 
 // update customer
-router.post('/update_customer/:customerId',customerController.updateCustomer)
+router.put('/update_customer/:customerId',customerController.updateCustomer)
 
 // delete customer
-router.delete('delete_customer/:customerId',customerController.deleteCustomer)
+router.delete('/delete_customer/:customerId',customerController.deleteCustomer)
 
 
 router.get('*',(req,res)=>{

@@ -1,4 +1,3 @@
-import { get, set } from "mongoose"
 import Customer from"../models/customerModel.js"
 const insertCustomer = async function(req,res){
     try {
@@ -29,7 +28,7 @@ const getCustomer = async function(req,res){
 const updateCustomer = async(req,res)=>{
     try {
         const customerId = req.params.customerId
-        Customer.findByIdAndUpdate({_id:customerId},$set:{
+        await Customer.findByIdAndUpdate(customerId,{$set:{
             name:req.body.name,
             email:req.body.email,
             date:req.body.date,
@@ -37,7 +36,7 @@ const updateCustomer = async(req,res)=>{
             phone:req.body.phone,
             country:req.body.country,
             address:req.body.address
-        },{new:true})
+        }},{new:true})
         res.send("update...")
     } catch (error) {
         console.log(error.message);       
@@ -46,7 +45,8 @@ const updateCustomer = async(req,res)=>{
 const deleteCustomer = async(req,res)=>{
     try {
         const customerId = req.params.customerId
-        Customer.findByIdAndDelete({_id:customerId})
+        console.log(customerId);
+        await Customer.findByIdAndDelete(customerId)
         res.send("delete...")
     } catch (error) {
         console.log(error.message);
@@ -55,5 +55,6 @@ const deleteCustomer = async(req,res)=>{
 export default {
     insertCustomer,
     updateCustomer,
+    deleteCustomer,
     getCustomer
 }
