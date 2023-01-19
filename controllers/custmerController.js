@@ -1,3 +1,4 @@
+import { get, set } from "mongoose"
 import Customer from"../models/customerModel.js"
 const insertCustomer = async function(req,res){
     try {
@@ -11,7 +12,7 @@ const insertCustomer = async function(req,res){
             address:req.body.address
         })         
         const customerData = await customer.save()
-        res.send("done...")
+        res.send("insert...")
     } catch (error) {
         console.log(error.message);
     }
@@ -19,12 +20,40 @@ const insertCustomer = async function(req,res){
 const getCustomer = async function(req,res){
     try {
         const result = await Customer.find()
-        res.send(result)
+        res.json(result)
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const updateCustomer = async(req,res)=>{
+    try {
+        const customerId = req.params.customerId
+        Customer.findByIdAndUpdate({_id:customerId},$set:{
+            name:req.body.name,
+            email:req.body.email,
+            date:req.body.date,
+            status:req.body.status,
+            phone:req.body.phone,
+            country:req.body.country,
+            address:req.body.address
+        },{new:true})
+        res.send("update...")
+    } catch (error) {
+        console.log(error.message);       
+    }
+}
+const deleteCustomer = async(req,res)=>{
+    try {
+        const customerId = req.params.customerId
+        Customer.findByIdAndDelete({_id:customerId})
+        res.send("delete...")
     } catch (error) {
         console.log(error.message);
     }
 }
 export default {
     insertCustomer,
+    updateCustomer,
     getCustomer
 }
