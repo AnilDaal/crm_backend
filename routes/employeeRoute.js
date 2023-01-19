@@ -1,20 +1,20 @@
-import emplyeeController from "../controllers/employeeController.js"
 import express from "express"
 import employeeController from "../controllers/employeeController.js"
 
 const router = express()
 
-// read employee
-router.get('/get_employee',employeeController.getEmployee)
-
 // create employee
-router.post('/add_employee',employeeController.insertEmployee)
+router.post('/employee',employeeController.addEmployee)
+
+// read employee
+router.get('/employee',employeeController.getEmployee)
+router.get('/employee/:employeeId',employeeController.getSingleEmployee)
 
 // update employee
-router.put('/update_employee',employeeController.updateEmployee)
+router.put('/employee/:employeeId',employeeController.updateEmployee)
 
 // delete employee
-router.delete('delete_employee',employeeController.deleteEmployee)
+router.delete('/employee/:employeeId',employeeController.deleteEmployee)
 
 export default {
      router

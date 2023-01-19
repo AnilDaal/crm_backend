@@ -14,10 +14,9 @@ mongoose.connect(("mongodb://127.0.0.1:27017/Crm"),()=>{
     console.log("mongoose connected");
 })
 
+app.use("/",employeeRoute.router)
 app.use("/",customerRoute.router)
-app.use('/',employeeRoute.router)
 app.get('/',(req,res)=>{
-    createEmployee()
     res.send('hello world')
 })
 

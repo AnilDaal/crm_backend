@@ -21,6 +21,13 @@ const EmploySchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    role:{
+        type:String,
+        enum:["Tech","Business","Finacial"]
+    },
+    isVarified:{
+        type:Number
     }
 })
 const Employee = mongoose.model("Employee",EmploySchema)

@@ -4,16 +4,17 @@ import customerController from "../controllers/custmerController.js"
 const router = express()
 
 // add customer 
-router.post('/add_customer',customerController.insertCustomer)
+router.post('/customer',customerController.addCustomer)
 
 // get customer
-router.get('/get_customer',customerController.getCustomer)
+router.get('/customer',customerController.getCustomer)
+router.get('/customer/:customerId',customerController.getSingleCustomer)
 
 // update customer
-router.put('/update_customer/:customerId',customerController.updateCustomer)
+router.put('/customer/:customerId',customerController.updateCustomer)
 
 // delete customer
-router.delete('/delete_customer/:customerId',customerController.deleteCustomer)
+router.delete('/customer/:customerId',customerController.deleteCustomer)
 
 
 router.get('*',(req,res)=>{

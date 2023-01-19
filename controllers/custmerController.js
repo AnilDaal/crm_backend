@@ -1,5 +1,5 @@
 import Customer from"../models/customerModel.js"
-const insertCustomer = async function(req,res){
+const addCustomer = async function(req,res){
     try {
         const customer = new Customer({
             name:req.body.name,
@@ -22,6 +22,15 @@ const getCustomer = async function(req,res){
         res.json(result)
     } catch (error) {
         console.log(error.message);
+    }
+}
+const getSingleCustomer= async function(req,res){
+    try {
+        const customerId = req.params.customerId
+        const result = await Customer.findById(customerId)
+        res.json(result)
+    } catch (error) {
+        
     }
 }
 
@@ -53,8 +62,9 @@ const deleteCustomer = async(req,res)=>{
     }
 }
 export default {
-    insertCustomer,
+    addCustomer,
     updateCustomer,
     deleteCustomer,
-    getCustomer
+    getCustomer,
+    getSingleCustomer
 }
