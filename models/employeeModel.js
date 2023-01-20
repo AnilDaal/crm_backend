@@ -10,10 +10,7 @@ const EmploySchema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        required:true
-    },
-    role:{
-        type:String
+        unique:true
     },
     image:{
         type:String,
