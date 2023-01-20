@@ -8,6 +8,10 @@ const port = process.env.PORT || 5000
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use((req,res,next)=>{
+    console.log("HTTP method"+req.method+" URL-"+req.url);
+    next()
+})
 
 mongoose.set('strictQuery', false);
 mongoose.connect(("mongodb://127.0.0.1:27017/Crm"),()=>{

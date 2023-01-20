@@ -106,7 +106,6 @@ const singupEmployee = async (req,res)=>{
     const {email,password,name,role,phone} = req.body
     try {
         const existedEmp = await Employee.findOne({email:email})
-        console.log(existedEmp);
         if(existedEmp){
             return res.status(400).json({message:"all ready user existed"})
         }
