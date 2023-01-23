@@ -1,8 +1,8 @@
 import Employee from "../models/employeeModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
 
-const Secretkey  = "anil"
 // mail varify
 // const mailvarify = async (email,name,userId)=>{
 //     try {    
@@ -117,7 +117,7 @@ const singupEmployee = async (req,res)=>{
         role:role,
         password:passwordHash
     })
-    const token = jwt.sign({email: userData.email ,id: userData._id},Secretkey)
+    const token = jwt.sign({email: userData.email ,id: userData._id},process.env.Secretkey)
     res.status(201).json({user:userData,token:token})
             
 } catch (error) {
@@ -134,7 +134,7 @@ const loginEmployee = async (req,res)=>{
         const pass = bcrypt.compare(password,userData.password)
         if(!pass)
         res.status(404).json({message:"user and password wrong"})
-        const token = jwt.sign({email:userData.email,id:userData._id},Secretkey)
+        const token = jwt.sign({email:userData.email,id:userData._id},process.env.Secretkey)
         res.status(200).json({user:userData,token:token})
     } catch (error) {
         console.log(error.message);

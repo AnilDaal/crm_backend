@@ -40,7 +40,6 @@ const updateCustomer = async(req,res)=>{
         await Customer.findByIdAndUpdate(customerId,{$set:{
             name:req.body.name,
             email:req.body.email,
-            date:req.body.date,
             status:req.body.status,
             phone:req.body.phone,
             country:req.body.country,
