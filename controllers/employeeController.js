@@ -45,8 +45,8 @@ const Secretkey  = "anil"
 // }
 const addEmployee = async function(req,res){
     try {
-        const spass = await bcrypt.hash(req.body.password)
-        const employee = new Employee.create({
+        const spass = await bcrypt.hash(req.body.password,10)
+        const employee = Employee.create({
             name:req.body.name,
             email:req.body.email,
             phone:req.body.phone,
@@ -134,8 +134,8 @@ const loginEmployee = async (req,res)=>{
         const pass = bcrypt.compare(password,userData.password)
         if(!pass)
         res.status(404).json({message:"user and password wrong"})
-        const token = jwt.sign({userData:email,userData:_id},Secretkey)
-        res.status(201).json({user:userData,token:token})
+        const token = jwt.sign({email:userData.email,id:userData._id},Secretkey)
+        res.status(200).json({user:userData,token:token})
     } catch (error) {
         console.log(error.message);
         res.status(500).json({message:"something went wrong"})

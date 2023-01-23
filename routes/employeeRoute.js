@@ -1,6 +1,5 @@
 import express from "express"
 import employeeController from "../controllers/employeeController.js"
-import session from "express-session"
 import auth from "../middlewares/auth.js"
 
 const router = express()
@@ -21,6 +20,7 @@ router.delete('/employee/:employeeId',auth,employeeController.deleteEmployee)
 
 // signup
 router.post('/employee/signup',auth,employeeController.singupEmployee)
+
 //login 
 router.post('/employee/signin',auth,employeeController.loginEmployee)
 export default {

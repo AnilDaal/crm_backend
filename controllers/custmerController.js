@@ -30,7 +30,7 @@ const getSingleCustomer= async function(req,res){
         const result = await Customer.findById(customerId)
         res.json(result)
     } catch (error) {
-        
+        console.log(error.message)
     }
 }
 

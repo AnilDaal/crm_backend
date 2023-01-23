@@ -9,7 +9,7 @@ const auth = (req,res,next)=>{
             req.userId=user.id
         }
         else{
-            res.status(401).json({message:"unauthorized user"})
+            return res.status(401).json({message:"unauthorized user"})
         }
         next()
     } catch (error) {

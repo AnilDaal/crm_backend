@@ -17,16 +17,14 @@ const CustomerSchema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        min:10,
-        max:10,
+        length:10,
         unique:true
     },
     country:{
         type:String
     },
     address:{
-        type:String,
-        required:true
+        type:String
     }
 })
 const Customer = mongoose.model("Customer",CustomerSchema)
