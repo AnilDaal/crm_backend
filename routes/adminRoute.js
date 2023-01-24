@@ -6,6 +6,7 @@ const router = express()
 // add admin login 
 router.post('/admin/login',adminController.adminLogin)
 
-export default {
-    router
-}
+// add admin signup
+router.post('/admin/signup',adminController.adminSignup)
+
+export default router

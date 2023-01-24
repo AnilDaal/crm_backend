@@ -19,10 +19,8 @@ router.put('/employee/:employeeId',auth,employeeController.updateEmployee)
 router.delete('/employee/:employeeId',auth,employeeController.deleteEmployee)
 
 // signup
-router.post('/employee/signup',auth,employeeController.singupEmployee)
+// router.post('/employee/signup',employeeController.singupEmployee)
 
 //login 
-router.post('/employee/signin',auth,employeeController.loginEmployee)
-export default {
-     router
-}
+router.post('/employee/signin',employeeController.loginEmployee)
+export default router

@@ -1,63 +1,65 @@
 import Customer from"../models/customerModel.js"
 const addCustomer = async function(req,res){
+    const {name,email,date,status,phone,country,address} = req.body
     try {
-        const customer = new Customer({
-            name:req.body.name,
-            email:req.body.email,
-            date:req.body.date,
-            status:req.body.status,
-            phone:req.body.phone,
-            country:req.body.country,
-            address:req.body.address
+        const addCust = await Customer.create({
+            name,
+            email,
+            date,
+            status,
+            phone,
+            country,
+            address
         })         
-        const customerData = await customer.save()
-        res.send("insert...")
+        res.status(201).json(addCust)
     } catch (error) {
-        console.log(error.message);
+       res.status(501).json({message:error})
     }
 }
 const getCustomer = async function(req,res){
     try {
-        const result = await Customer.find()
-        res.json(result)
+        const getCust = await Customer.find()
+        res.status(201).json(getCust)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error})
     }
 }
 const getSingleCustomer= async function(req,res){
     try {
         const customerId = req.params.customerId
-        const result = await Customer.findById(customerId)
-        res.json(result)
+        const getSingleCust = await Customer.findById(customerId)
+        res.status(201).json(getSingleCust)
     } catch (error) {
-        console.log(error.message)
+        res.status(501).json({message:error})
     }
 }
 
 const updateCustomer = async(req,res)=>{
+    const {name,email,date,status,phone,country,address} = req.body
     try {
         const customerId = req.params.customerId
-        await Customer.findByIdAndUpdate(customerId,{$set:{
-            name:req.body.name,
-            email:req.body.email,
-            status:req.body.status,
-            phone:req.body.phone,
-            country:req.body.country,
-            address:req.body.address
+        const updateCust = await Customer.findByIdAndUpdate(customerId,{$set:{
+            name,
+            email,
+            date,
+            status,
+            phone,
+            country,
+            address
         }},{new:true})
-        res.send("update...")
+        res.status(201).json(updateCust)
     } catch (error) {
-        console.log(error.message);       
+        res.status(501).json({message:error})    
     }
 }
 const deleteCustomer = async(req,res)=>{
     try {
         const customerId = req.params.customerId
         console.log(customerId);
-        await Customer.findByIdAndDelete(customerId)
-        res.send("delete...")
+        const deleteCust = await Customer.findByIdAndDelete(customerId)
+        res.status(201).json(deleteCust)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error})
     }
 }
 export default {

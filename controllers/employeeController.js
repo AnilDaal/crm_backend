@@ -1,7 +1,6 @@
 import Employee from "../models/employeeModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
 
 // mail varify
 // const mailvarify = async (email,name,userId)=>{
@@ -44,101 +43,109 @@ import dotenv from "dotenv"
 //     }
 // }
 const addEmployee = async function(req,res){
+    const {name,email,phone,role,address,country,password} = req.body
     try {
-        const spass = await bcrypt.hash(req.body.password,10)
-        const employee = Employee.create({
-            name:req.body.name,
-            email:req.body.email,
-            phone:req.body.phone,
-            role:req.body.role,
-            password:spass
+        const hashPassword = await bcrypt.hash(req.body.password,10)
+        const addEmp = await Employee.create({
+            name,
+            email,
+            phone,
+            role,
+            address,
+            country,
+            password:hashPassword
         })
         // const employeeData = await employee.save()
-        res.send("done....")
+        res.status(201).json(addEmp)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error})
     }
 }
 
 const getEmployee = async (req,res)=>{
     try {
-        const result = await Employee.find()
-        res.json(result)
+        const getEmp = await Employee.find()
+        res.staus(201).json(getEmp)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error})
     }
 }
 const getSingleEmployee = async (req,res)=>{
     try {
         const employeeId = req.params.employeeId
-        const result = await Employee.findById(employeeId)
-        res.json(result)
+        const getSingleEmp = await Employee.findById(employeeId)
+        res.status(201).json(getSingleEmp)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error})
     }
 }
 const updateEmployee = async(req,res)=>{
+    const {name,email,phone,role,address,country,password} = req.body
     try {
-        const passwordHash = await bcrypt.hash(req.body.password,10)
+        const salt  = await bcrypt.genSalt(10)
+        const hashPassword = await bcrypt.hash(password,salt)
         const employeeId = req.params.employeeId
-        await Employee.findByIdAndUpdate(employeeId,{$set:{
-            name:req.body.name,
-            email:req.body.email,
-            phone:req.body.phone,
-            role:req.body.role,
-            password:passwordHash
+        const updateEmp = await Employee.findByIdAndUpdate(employeeId,{$set:{
+            name,
+            email,
+            phone,
+            role,
+            address,
+            country,
+            password:hashPassword
         }},{new:true})
-        res.send("update...")
+        res.status(201).json(updateEmp)
     } catch (error) {
-        console.log(error.message);       
+     res.status(501).json({message:error});       
     }
 }
 const deleteEmployee = async(req,res)=>{
     try {
         const employeeId = req.params.employeeId
-        await Employee.findByIdAndDelete(employeeId)
-        res.send("delete...")
+        const deleteEmp = await Employee.findByIdAndDelete(employeeId)
+        res.status(201).status(deleteEmp)
     } catch (error) {
         console.log(error.message);
     }
 }
-const singupEmployee = async (req,res)=>{
-    const {email,password,name,role,phone} = req.body
-    try {
-        const existedEmp = await Employee.findOne({email:email})
-        if(existedEmp){
-            return res.status(400).json({message:"all ready user existed"})
-        }
-    const passwordHash = await bcrypt.hash(password,10)
-    const userData = await Employee.create({
-        name:name,
-        email:email,
-        phone:phone,
-        role:role,
-        password:passwordHash
-    })
-    const token = jwt.sign({email: userData.email ,id: userData._id},process.env.Secretkey)
-    res.status(201).json({user:userData,token:token})
+// const singupEmployee = async (req,res)=>{
+//     const {email,password,name,role,phone,address,country} = req.body
+//     try {
+//         const existedEmp = await Employee.findOne({email})
+//         if(existedEmp){
+//             return res.status(401).json({message:"all ready user existed"})
+//         }
+//     const salt  = await bcrypt.genSalt(10)
+//     const passwordHash = await bcrypt.hash(password,salt)
+//     const userData = await Employee.create({
+//         name,
+//         email,
+//         phone,
+//         role,
+//         address,
+//         country,
+//         password:passwordHash
+//     })
+//     const token = await jwt.sign({email: userData.email ,id: userData._id},process.env.Secretkey)
+//     res.status(201).json({token})
             
-} catch (error) {
-        console.log(error.message);
-        res.status(500).json({message:"somthing went wrong"})
-}
-}
+// } catch (error) {
+//         res.status(501).json({message:error})
+// }
+// }
 const loginEmployee = async (req,res)=>{
     const {email,password} = req.body
     try {
-        const userData = await Employee.findOne({email:email})
+        const userData = await Employee.findOne({email})
         if(!userData)
-        res.status(404).json({message:"user and password wrong"})
-        const pass = bcrypt.compare(password,userData.password)
-        if(!pass)
-        res.status(404).json({message:"user and password wrong"})
-        const token = jwt.sign({email:userData.email,id:userData._id},process.env.Secretkey)
-        res.status(200).json({user:userData,token:token})
+        return res.status(404).json({message:"user and password wrong"})
+        const hashPassword = await bcrypt.compare(password, userData.password)
+        if(!hashPassword)
+        return res.status(404).json({message:"user and password wrong"})
+        const token = await jwt.sign({id:userData._id},process.env.Secretkey)
+        res.status(200).json({token:token})
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({message:"something went wrong"})
+        res.status(500).json({message:error})
     }
 }
 export default {
@@ -148,5 +155,4 @@ export default {
     getEmployee,
     getSingleEmployee,
     loginEmployee,
-    singupEmployee
 }

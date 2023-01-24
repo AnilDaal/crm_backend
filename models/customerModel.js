@@ -1,12 +1,10 @@
 import mongoose from "mongoose"
 const CustomerSchema = new mongoose.Schema({
     name:{
-        type:String,
-        required:true
+        type:String
     },
     email:{
-        type:String,
-        required:true
+        type:String
     },
     date:{
         type:Date,
@@ -17,7 +15,6 @@ const CustomerSchema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        length:10,
         unique:true
     },
     country:{

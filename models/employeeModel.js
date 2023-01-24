@@ -1,31 +1,30 @@
 import mongoose from "mongoose"
 const EmploySchema = new mongoose.Schema({
     name:{
-        type:String,
-        required:true
+        type:String
     },
     email:{
-        type:String,
-        required:true
+        type:String
     },
     phone:{
         type:Number,
         unique:true
     },
-    image:{
-        type:String,
-    },
     password:{
-        type:String,
-        required:true
+        type:String
     },
     role:{
         type:String,
-        enum:["Tech","Business","Finacial"]
+        enum:["Operation","Sales","Account"]
     },
-    isVarified:{
-        type:Number
+    address:{
+        type:String
+    },
+    country:{
+        type:String,
+        enum:["India","UK","Germany","Dubai"]
     }
+    
 })
 const Employee = mongoose.model("Employee",EmploySchema)
 export default Employee

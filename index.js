@@ -22,11 +22,11 @@ mongoose.connect((process.env.Mongo_Data),()=>{
     console.log("mongoose connected");
 })
 
-app.use("/",employeeRoute.router)
-app.use("/",adminRoute.router)
-app.use("/",customerRoute.router)
+app.use("/",employeeRoute)
+app.use("/",adminRoute)
+app.use("/",customerRoute)
 app.get('/',(req,res)=>{
-    res.send('hello world')
+    res.status(201).json({message:'hello world'})
 })
 
 app.listen(port,()=>{

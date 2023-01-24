@@ -16,13 +16,6 @@ router.put('/customer/:customerId',customerController.updateCustomer)
 // delete customer
 router.delete('/customer/:customerId',customerController.deleteCustomer)
 
-
-router.get('*',(req,res)=>{
-    res.redirect('/')
-})
-
-export default {
-    router
-}
+export default router
 
 
