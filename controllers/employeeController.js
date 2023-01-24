@@ -45,7 +45,7 @@ import jwt from "jsonwebtoken"
 const addEmployee = async function(req,res){
     const {name,email,phone,role,address,country,password} = req.body
     try {
-        const hashPassword = await bcrypt.hash(req.body.password,10)
+        const hashPassword = await bcrypt.hash(password,10)
         const addEmp = await Employee.create({
             name,
             email,
@@ -65,9 +65,9 @@ const addEmployee = async function(req,res){
 const getEmployee = async (req,res)=>{
     try {
         const getEmp = await Employee.find()
-        res.staus(201).json(getEmp)
+        res.status(201).json(getEmp)
     } catch (error) {
-        res.status(501).json({message:error})
+        res.status(502).json({message:error})
     }
 }
 const getSingleEmployee = async (req,res)=>{
@@ -143,7 +143,7 @@ const loginEmployee = async (req,res)=>{
         if(!hashPassword)
         return res.status(404).json({message:"user and password wrong"})
         const token = await jwt.sign({id:userData._id},process.env.Secretkey)
-        res.status(200).json({token:token})
+        res.status(201).json({token:token})
     } catch (error) {
         res.status(500).json({message:error})
     }

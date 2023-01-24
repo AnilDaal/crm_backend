@@ -12,7 +12,7 @@ const auth = (req,res,next)=>{
         }
         next()
     } catch (error) {
-        res.status(501).json({message:error})
+        res.status(502).json({message:error})
     }
 }
 export default auth

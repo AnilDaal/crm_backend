@@ -7,7 +7,7 @@ const adminLogin = async (req,res)=>{
     try {
         const adminData = await Admin.findOne({email})
         if(!adminData){
-            res.status(404).json({message:"wrong user"})
+            return res.status(404).json({message:"wrong user"})
         }  
         const hashPassword = await bcrypt.compare(password, adminData.password)
         if(!hashPassword)

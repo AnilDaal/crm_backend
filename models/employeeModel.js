@@ -7,8 +7,7 @@ const EmploySchema = new mongoose.Schema({
         type:String
     },
     phone:{
-        type:Number,
-        unique:true
+        type:String
     },
     password:{
         type:String

@@ -5,7 +5,7 @@ import auth from "../middlewares/auth.js"
 const router = express()
 
 // create employee
-router.post('/employee',auth,employeeController.addEmployee)
+router.post('/employee',employeeController.addEmployee)
 
 // read employee
 router.get('/employee',auth,employeeController.getEmployee)
@@ -22,5 +22,5 @@ router.delete('/employee/:employeeId',auth,employeeController.deleteEmployee)
 // router.post('/employee/signup',employeeController.singupEmployee)
 
 //login 
-router.post('/employee/signin',employeeController.loginEmployee)
+router.post('/employee/login',employeeController.loginEmployee)
 export default router

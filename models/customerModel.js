@@ -14,8 +14,7 @@ const CustomerSchema = new mongoose.Schema({
         type:String
     },
     phone:{
-        type:Number,
-        unique:true
+        type:String
     },
     country:{
         type:String
