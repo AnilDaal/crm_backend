@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const taskSchema = mongoose.Schema({
     running:{
-        type:String
+        type:String,
     },
     completed:{
         String
