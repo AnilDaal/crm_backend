@@ -8,19 +8,22 @@ const router = express()
 router.post('/employee',employeeController.addEmployee)
 
 // read employee
-router.get('/employee',auth,employeeController.getEmployee)
-router.get('/employee/:employeeId',auth,employeeController.getSingleEmployee)
+router.get('/employee',auth.authAdmin,employeeController.getEmployee)
+router.get('/employee/:employeeId',auth.authAdmin,employeeController.getSingleEmployee)
 // router.get('employee/varify/:employeeId',employeeController.varifymail)
 
 // update employee
-router.put('/employee/:employeeId',auth,employeeController.updateEmployee)
+router.put('/employee/:employeeId',auth.authAdmin,employeeController.updateEmployee)
 
 // delete employee
-router.delete('/employee/:employeeId',auth,employeeController.deleteEmployee)
+router.delete('/employee/:employeeId',auth.authAdmin,employeeController.deleteEmployee)
 
 // signup
 // router.post('/employee/signup',employeeController.singupEmployee)
 
 //login 
 router.post('/employee/login',employeeController.loginEmployee)
+
+//logout
+router.post('/employee/logout',auth.authEmp,employeeController.logout)
 export default router

@@ -85,6 +85,15 @@ const updateEmployee = async(req,res)=>{
         const salt  = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password,salt)
         const employeeId = req.params.employeeId
+        const tempEmp = await Employee.findByIdAndUpdate(employeeId,{$set:{
+            name,
+            email,
+            phone,
+            role,
+            address,
+            country,
+            password
+        }},{new:true})
         const updateEmp = await Employee.findByIdAndUpdate(employeeId,{$set:{
             name,
             email,
@@ -94,7 +103,7 @@ const updateEmployee = async(req,res)=>{
             country,
             password:hashPassword
         }},{new:true})
-        res.status(201).json(updateEmp)
+        res.status(201).json(tempEmp)
     } catch (error) {
      res.status(501).json({message:error});       
     }
@@ -103,9 +112,9 @@ const deleteEmployee = async(req,res)=>{
     try {
         const employeeId = req.params.employeeId
         const deleteEmp = await Employee.findByIdAndDelete(employeeId)
-        res.status(201).status(deleteEmp)
+        res.status(201).json(deleteEmp)
     } catch (error) {
-        console.log(error.message);
+        res.status(501).json({message:error});
     }
 }
 // const singupEmployee = async (req,res)=>{
@@ -142,11 +151,33 @@ const loginEmployee = async (req,res)=>{
         const hashPassword = await bcrypt.compare(password, userData.password)
         if(!hashPassword)
         return res.status(404).json({message:"user and password wrong"})
-        const token = await jwt.sign({id:userData._id},process.env.Secretkey)
-        res.status(201).json({token:token})
+        
+        // token generate
+        const token = await jwt.sign({id:userData._id,user:userData},process.env.Secretkey,{
+            expiresIn:'1d'
+        })
+
+        await userData.updateOne({
+            tokens:tokens.concat(token)
+        })
+
+        res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
+        res.status(201).send({token})
     } catch (error) {
-        res.status(500).json({message:error})
+        res.status(501).json({message:error})
     }
+}
+
+const logout = async(req,res)=>{
+    try {
+    req.employee.tokens = await req.employee.tokens.filter((elem)=>{
+        return elem.token != req.employeeId
+    })
+    res.clearCookie("CRM_Emp")
+    await req.employee.save()
+} catch (error) {
+        res.status(502).json({message:error})
+}
 }
 export default {
     addEmployee,
@@ -155,4 +186,5 @@ export default {
     getEmployee,
     getSingleEmployee,
     loginEmployee,
+    logout
 }

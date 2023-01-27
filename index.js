@@ -5,12 +5,14 @@ import cors from "cors"
 import employeeRoute from "./routes/employeeRoute.js"
 import dotenv from "dotenv"
 import adminRoute from "./routes/adminRoute.js"
+import cookieParser from "cookie-parser";
 
 
 const port = process.env.PORT || 5000
 const app = express()
 dotenv.config()
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use((req,res,next)=>{
     console.log("HTTP method-"+req.method+" URL-"+req.url);

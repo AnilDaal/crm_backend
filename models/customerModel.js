@@ -14,7 +14,11 @@ const CustomerSchema = new mongoose.Schema({
         type:String
     },
     phone:{
-        type:String
+        type:String,
+        validate(value){
+            if(value<1)
+            throw new Error("Enter positive age")
+        }
     },
     country:{
         type:String
