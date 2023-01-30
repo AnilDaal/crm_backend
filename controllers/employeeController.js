@@ -156,11 +156,6 @@ const loginEmployee = async (req,res)=>{
         const token = await jwt.sign({id:userData._id,user:userData},process.env.Secretkey,{
             expiresIn:'1d'
         })
-
-        await userData.updateOne({
-            tokens:tokens.concat(token)
-        })
-
         res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
         res.status(201).send({token})
     } catch (error) {
@@ -173,8 +168,9 @@ const logout = async(req,res)=>{
     req.employee.tokens = await req.employee.tokens.filter((elem)=>{
         return elem.token != req.employeeId
     })
+    // await req.employee.save()
     res.clearCookie("CRM_Emp")
-    await req.employee.save()
+    res.status(201).json({message:"logout done.."}).end()
 } catch (error) {
         res.status(502).json({message:error})
 }

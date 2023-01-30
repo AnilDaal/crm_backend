@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
-const adminSchema = mongoose.Schema({
+
+const adminSchema = new mongoose.Schema({
     name:{
         type:String
     },
@@ -22,7 +23,7 @@ adminSchema.methods.generateToken = async function(){
         const token = await jwt.sign({id:this._id,user:this},process.env.Secretkey,{
             expiresIn:'2d'
         })
-        this.tokens = this.tokens.concat(token)
+        // this.tokens = this.tokens.concat(token)
         return token
     } catch (error) {
         res.status(501).json({message:error})

@@ -9,7 +9,7 @@ const adminLogin = async (req,res)=>{
     try {
         //for updating data we are using admin values
         const adminData = await Admin.findOne({email})
-        if(!adminData){
+        if(!adminData.email){
             return res.status(404).json({message:"wrong user"})
         }  
         const hashPassword = await bcrypt.compare(password, adminData.password)
@@ -17,6 +17,7 @@ const adminLogin = async (req,res)=>{
             return res.status(404).json({message:"password wrong"})
         // token generate
         const token = await adminData.generateToken()
+        // adminData.tokens.concat(token.token)
         res.cookie("CRM_Admin",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
         res.status(201).json(token)
     } catch (error) {
@@ -29,8 +30,9 @@ const adminLogout = async (req,res)=>{
     req.admin.tokens = await req.admin.tokens.filter((elem)=>{
         return elem.token != req.adminId
     })
+    // await req.admin.save()
     res.clearCookie("CRM_Admin")
-    await req.admin.save()
+    res.status(201).json({message:"logout done.."}).end()
 }
  catch(error) {
     res.status(502).json({message:error})
