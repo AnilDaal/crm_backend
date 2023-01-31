@@ -1,6 +1,7 @@
 import Employee from "../models/employeeModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import Task from "../models/taskModel.js"
 
 // mail varify
 // const mailvarify = async (email,name,userId)=>{
@@ -85,15 +86,6 @@ const updateEmployee = async(req,res)=>{
         const salt  = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password,salt)
         const employeeId = req.params.employeeId
-        const tempEmp = await Employee.findByIdAndUpdate(employeeId,{$set:{
-            name,
-            email,
-            phone,
-            role,
-            address,
-            country,
-            password
-        }},{new:true})
         const updateEmp = await Employee.findByIdAndUpdate(employeeId,{$set:{
             name,
             email,
@@ -103,7 +95,7 @@ const updateEmployee = async(req,res)=>{
             country,
             password:hashPassword
         }},{new:true})
-        res.status(201).json(tempEmp)
+        res.status(201).json(updateEmp)
     } catch (error) {
      res.status(501).json({message:error});       
     }
@@ -156,7 +148,7 @@ const loginEmployee = async (req,res)=>{
         const token = await jwt.sign({id:userData._id,user:userData},process.env.Secretkey,{
             expiresIn:'1d'
         })
-        res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
+        // res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
         res.status(201).send({token})
     } catch (error) {
         res.status(501).json({message:error})
@@ -169,11 +161,41 @@ const logout = async(req,res)=>{
         return elem.token != req.employeeId
     })
     // await req.employee.save()
-    res.clearCookie("CRM_Emp")
+    // res.clearCookie("CRM_Emp")
     res.status(201).json({message:"logout done.."}).end()
 } catch (error) {
         res.status(502).json({message:error})
 }
+}
+
+const addTask = async(req,res)=>{
+    const {description,assigndate,deadline,title} = req.body
+    try {
+        const employeeId = req.params.employeeId
+        const task = await Task.create({
+            comming:[{
+                description,
+                title,
+                assigndate,
+                deadline,
+                employeeId:employeeId
+            }]
+        })
+        res.status(201).json(task)
+    } catch (error) {
+        res.status(501).json(error)
+    }
+}
+
+const getTask = async (req,res)=>{
+    const employeeId = req.params.employeeId
+    try {
+        const employeeTask = await  Task.find()
+        console.log(employeeTask);
+        res.status(201).json(employeeTask)
+    } catch (error) {
+        res.status(501).json({message:error})
+    }
 }
 export default {
     addEmployee,
@@ -182,5 +204,7 @@ export default {
     getEmployee,
     getSingleEmployee,
     loginEmployee,
-    logout
+    logout,
+    getTask,
+    addTask
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import bcrypt from "bcrypt"
+// import bcrypt from "bcrypt"
 import validator from "validator"
 const EmploySchema = new mongoose.Schema({
     name:{

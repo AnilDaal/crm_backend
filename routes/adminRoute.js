@@ -4,6 +4,8 @@ import auth from "../middlewares/auth.js"
 
 const router = new express.Router
 
+// get admin
+router.get('/admin/',adminController.getAdmin)
 // add admin login 
 router.post('/admin/login',adminController.adminLogin)
 

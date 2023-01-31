@@ -9,16 +9,20 @@ const adminLogin = async (req,res)=>{
     try {
         //for updating data we are using admin values
         const adminData = await Admin.findOne({email})
-        if(!adminData.email){
+        if(!adminData){
             return res.status(404).json({message:"wrong user"})
         }  
         const hashPassword = await bcrypt.compare(password, adminData.password)
         if(!hashPassword)
-            return res.status(404).json({message:"password wrong"})
+        return res.status(404).json({message:"password wrong"})
         // token generate
-        const token = await adminData.generateToken()
-        // adminData.tokens.concat(token.token)
-        res.cookie("CRM_Admin",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
+        // const token = await adminData.generateToken()
+        // const adminId = adminData._id
+        const token = await jwt.sign({id:adminData._id,user:adminData},process.env.Secretkey,{expiresIn:'2d'})
+        // await adminData.updateOne({$push:{
+        //     tokens:{
+        //         $each:[{token:token}]}}},{new:true})
+        // res.cookie("CRM_Admin",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
         res.status(201).json(token)
     } catch (error) {
       res.status(501).json({message:error})
@@ -31,7 +35,7 @@ const adminLogout = async (req,res)=>{
         return elem.token != req.adminId
     })
     // await req.admin.save()
-    res.clearCookie("CRM_Admin")
+    // res.clearCookie("CRM_Admin")
     res.status(201).json({message:"logout done.."}).end()
 }
  catch(error) {
@@ -59,5 +63,13 @@ const adminSignup = async (req,res)=>{
 }
 }
 
+const getAdmin = async(req,res)=>{
+    try {
+        const adminData = await Admin.find({})
+        res.status(201).json(adminData)
+    } catch (error) {
+        res.status(501).json(error)
+    }
+}
 
-export default {adminLogin ,adminLogout,adminSignup}
+export default {adminLogin ,adminLogout,adminSignup,getAdmin}

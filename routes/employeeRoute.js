@@ -15,6 +15,12 @@ router.get('/employee/:employeeId',auth.authAdmin,employeeController.getSingleEm
 // update employee
 router.put('/employee/:employeeId',auth.authAdmin,employeeController.updateEmployee)
 
+// asign task to employee
+router.post('/employee/:employeeId/addTask',employeeController.addTask)
+
+// get task for employee
+router.get('/employee/getTask',employeeController.getTask)
+
 // delete employee
 router.delete('/employee/:employeeId',auth.authAdmin,employeeController.deleteEmployee)
 
