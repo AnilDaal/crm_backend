@@ -1,10 +1,16 @@
 import mongoose from "mongoose"
+import validator from "validator"
 const CustomerSchema = new mongoose.Schema({
     name:{
-        type:String
+        type:String,
+        required:true
     },
     email:{
-        type:String
+        type:String,
+        validate(value){
+            if(!validator.isEmail(value))
+            throw new Error("Enter a valid email ")
+        }
     },
     date:{
         type:Date,
@@ -18,13 +24,17 @@ const CustomerSchema = new mongoose.Schema({
         validate(value){
             if(value<1)
             throw new Error("Enter positive age")
-        }
+        },
+        required:true
     },
     country:{
-        type:String
+        type:String,
+        enum:["India","Usa","Uk","Dubai","Germany"],
+        required:true
     },
     address:{
-        type:String
+        type:String,
+        required:true
     }
 })
 const Customer = mongoose.model("Customer",CustomerSchema)

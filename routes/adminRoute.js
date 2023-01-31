@@ -5,7 +5,7 @@ import auth from "../middlewares/auth.js"
 const router = new express.Router
 
 // get admin
-router.get('/admin/',adminController.getAdmin)
+// router.get('/admin/',adminController.getAdmin)
 // add admin login 
 router.post('/admin/login',adminController.adminLogin)
 
@@ -13,6 +13,6 @@ router.post('/admin/login',adminController.adminLogin)
 router.post('/admin/logout',auth.authAdmin,adminController.adminLogout)
 
 // add admin signup
-router.post('/admin/signup',adminController.adminSignup)
+// router.post('/admin/signup',adminController.adminSignup)
 
 export default router

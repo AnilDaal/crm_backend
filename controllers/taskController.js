@@ -1,17 +1,36 @@
 import Task from "../models/taskModel.js"
 
-const createTask = async (req,res)=>{
-    const {addTask} = req.body
+const addTask = async(req,res)=>{
+    const {description,assigndate,deadline,title} = req.body
+    if(!description || !assigndate || !deadline || !title)
+    return res.status(401).json({message:"please fill all mandatory field"})
     try {
-        const taskData = await Task.create({
-            running:addTask
+        const employeeId = req.params.employeeId
+        const task = await Task.create({
+            comming:[{
+                description,
+                title,
+                assigndate,
+                deadline,
+                employeeId:employeeId
+            }]
         })
-        res.status(201).json(taskData)
+        res.status(201).json(task)
+    } catch (error) {
+        res.status(501).json(error)
+    }
+}
+
+const getTask = async (req,res)=>{
+    try {
+        const employeeTask = await Task.find()
+        res.status(201).json(employeeTask)
     } catch (error) {
         res.status(501).json({message:error})
     }
 }
 
-const completeTask = async (req,res)=>{
-    const {task}
+export default {
+    getTask,
+    addTask
 }

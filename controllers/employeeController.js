@@ -1,7 +1,6 @@
 import Employee from "../models/employeeModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import Task from "../models/taskModel.js"
 
 // mail varify
 // const mailvarify = async (email,name,userId)=>{
@@ -45,8 +44,11 @@ import Task from "../models/taskModel.js"
 // }
 const addEmployee = async function(req,res){
     const {name,email,phone,role,address,country,password} = req.body
+    if(!name || !email || !password || !role || !phone || !country || !address)
+    return res.status(401).json({message:"Please fill mandatory field"})
     try {
-        const hashPassword = await bcrypt.hash(password,10)
+        const salt = await bcrypt.genSalt(10)
+        const hashPassword = await bcrypt.hash(password,salt)
         const addEmp = await Employee.create({
             name,
             email,
@@ -66,15 +68,19 @@ const addEmployee = async function(req,res){
 const getEmployee = async (req,res)=>{
     try {
         const getEmp = await Employee.find()
+        if(!getEmp)
+        return res.status(201).json({message:"please add employees"})
         res.status(201).json(getEmp)
     } catch (error) {
-        res.status(502).json({message:error})
+        res.status(503).json({message:error})
     }
 }
 const getSingleEmployee = async (req,res)=>{
     try {
         const employeeId = req.params.employeeId
         const getSingleEmp = await Employee.findById(employeeId)
+        if(!getSingleEmp)
+        return res.status(401).json({message:"please enter a valid employee"})
         res.status(201).json(getSingleEmp)
     } catch (error) {
         res.status(501).json({message:error})
@@ -82,6 +88,8 @@ const getSingleEmployee = async (req,res)=>{
 }
 const updateEmployee = async(req,res)=>{
     const {name,email,phone,role,address,country,password} = req.body
+    if(!name || !email || !password || !role || !phone || !country || !address)
+    return res.status(401).json({message:"Please fill mandatory field"})
     try {
         const salt  = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password,salt)
@@ -103,6 +111,8 @@ const updateEmployee = async(req,res)=>{
 const deleteEmployee = async(req,res)=>{
     try {
         const employeeId = req.params.employeeId
+        if(!employeeId)
+        return res.status(401).json({message:"please enter a valid employee"})
         const deleteEmp = await Employee.findByIdAndDelete(employeeId)
         res.status(201).json(deleteEmp)
     } catch (error) {
@@ -136,6 +146,8 @@ const deleteEmployee = async(req,res)=>{
 // }
 const loginEmployee = async (req,res)=>{
     const {email,password} = req.body
+    if(!email || !password)
+    return res.status(401).json({message:"Enter email or password"})
     try {
         const userData = await Employee.findOne({email})
         if(!userData)
@@ -164,39 +176,10 @@ const logout = async(req,res)=>{
     // res.clearCookie("CRM_Emp")
     res.status(201).json({message:"logout done.."}).end()
 } catch (error) {
-        res.status(502).json({message:error})
+        res.status(504).json({message:error})
 }
 }
 
-const addTask = async(req,res)=>{
-    const {description,assigndate,deadline,title} = req.body
-    try {
-        const employeeId = req.params.employeeId
-        const task = await Task.create({
-            comming:[{
-                description,
-                title,
-                assigndate,
-                deadline,
-                employeeId:employeeId
-            }]
-        })
-        res.status(201).json(task)
-    } catch (error) {
-        res.status(501).json(error)
-    }
-}
-
-const getTask = async (req,res)=>{
-    const employeeId = req.params.employeeId
-    try {
-        const employeeTask = await  Task.find()
-        console.log(employeeTask);
-        res.status(201).json(employeeTask)
-    } catch (error) {
-        res.status(501).json({message:error})
-    }
-}
 export default {
     addEmployee,
     updateEmployee,
@@ -204,7 +187,5 @@ export default {
     getEmployee,
     getSingleEmployee,
     loginEmployee,
-    logout,
-    getTask,
-    addTask
+    logout
 }

@@ -1,6 +1,7 @@
 import express from "express"
 import employeeController from "../controllers/employeeController.js"
 import auth from "../middlewares/auth.js"
+import taskController from "../controllers/taskController.js"
 
 const router = express()
 
@@ -16,10 +17,10 @@ router.get('/employee/:employeeId',auth.authAdmin,employeeController.getSingleEm
 router.put('/employee/:employeeId',auth.authAdmin,employeeController.updateEmployee)
 
 // asign task to employee
-router.post('/employee/:employeeId/addTask',employeeController.addTask)
+router.post('/employee/:employeeId/addTask',auth.authAdmin,taskController.addTask)
 
 // get task for employee
-router.get('/employee/getTask',employeeController.getTask)
+router.get('/employee/:employeeId/getTask',auth.authBoth,taskController.getTask)
 
 // delete employee
 router.delete('/employee/:employeeId',auth.authAdmin,employeeController.deleteEmployee)

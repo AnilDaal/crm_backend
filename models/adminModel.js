@@ -1,15 +1,27 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
+import validator from "validator"
 
 const adminSchema = new mongoose.Schema({
     name:{
-        type:String
+        type:String,
+        required:true
     },
     email:{
-        type:String
+        type:String,
+        validate(value){
+            if(!validator.isEmail(value))
+            throw new Error("Enter a valid email")
+        },
+        required:true
     },
     password:{
-        type:String
+        type:String,
+        validate(value){
+            if(!validator.isStrongPassword(value))
+            throw new Error("Enter Strong Password")
+        },
+        required:true
     },
     tokens:[{
         token:{

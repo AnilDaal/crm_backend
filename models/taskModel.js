@@ -4,16 +4,12 @@ import Employee from "./employeeModel.js"
 const taskSchema = mongoose.Schema({
     running:[{
         taskname:{
-            type:String
+            type:String,
         },
         date:{
             type:Date,
             default:Date.now()
-        },
-        teamates:[{
-            type:'ObjectId',
-            ref:'Employee'
-        }]
+        }
     }],
     completed:[{
         taskname:{
@@ -22,15 +18,12 @@ const taskSchema = mongoose.Schema({
         date:{
             type:Date,
             default:Date.now()
-        },
-        teamates:[{
-            type:'ObjectId',
-            ref:'Employee'
-        }]
+        }
     }],
     comming:[{
         title:{
-            type:String
+            type:String,
+            required:true
         },
         assigndate:{
             type:Date,

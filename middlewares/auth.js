@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken"
+
+
 const authAdmin = (req,res,next)=>{
     try {
-       let token = req.headers.authorization.split(" ")[1];
-    //    const token = req.cookies.CRM_Admin
+        let token = req.headers.authorization.split(" ")[1];
+        // const token = req.cookies.CRM_Admin
         if(token){
             let adminData = jwt.verify(token,process.env.Secretkey)
             // we define the user id property in req. function
@@ -14,13 +16,14 @@ const authAdmin = (req,res,next)=>{
         }
         next()
     } catch (error) {
-        res.status(502).json({message:error})
+        res.status(501).json({message:error})
     }
 }
 
 const authEmp = async (req,res,next)=>{
     try {
-        const token = req.cookies.CRM_Emp
+        // const token = req.cookies.CRM_Emp
+       let token = req.headers.authorization.split(" ")[1];
         if(token){
             const employeeData = jwt.verify(token,process.env.Secretkey)
 
@@ -34,4 +37,21 @@ const authEmp = async (req,res,next)=>{
         res.status(501).json({message:error})
     }
 }
-export default {authAdmin,authEmp}
+
+const authBoth = async (req,res,next)=>{
+    try {
+        const token=req.headers.authorization.split(" ")[1]
+        if(token){
+            const userData = jwt.varify(token,process.env.Secretkey)
+            req.userId = userData.id
+            req.user = userData.user
+        }
+        else 
+        return res.status(401).json({message:"token not found"})
+        next()
+    } 
+    catch (error) {
+        res.status(501).json({message:error})
+    }
+}
+export default {authAdmin,authEmp,authBoth}

@@ -4,7 +4,8 @@ import validator from "validator"
 const EmploySchema = new mongoose.Schema({
     name:{
         type:String,
-        trim:true
+        trim:true,
+        required:true 
     },
     email:{
         type:String,
@@ -14,29 +15,39 @@ const EmploySchema = new mongoose.Schema({
             if(!validator.isEmail(value)){
                 throw new Error("Not a valid Email")
             }
-        }
+        },
+        required:true
     }
     },
     phone:{
         type:String,
         validate(value){
-            if(!validator.isMobilePhone(value,['en-IN','de-DE']))
+            if(!validator.isMobilePhone(value,['en-IN','de-DE',]))
             throw new Error("enter valid length phone number")
-        }
+        },
+        required:true
     },
     password:{
-        type:String
+        type:String,
+        validate(value){
+            if(!validator.isStrongPassword(value))
+            throw new Error("enter strong password")
+        },
+        required:true
     },
     role:{
         type:String,
-        enum:["Operation","Sales","Account"]
+        enum:["Operation","Sales","Account"],
+        required:true
     },
     address:{
         type:String,
+        required:true
     },
     country:{
         type:String,
-        enum:["India","UK","Germany","Dubai"]
+        enum:["India","Uk","Germany","Dubai","Usa"],
+        required:true
     },
     tokens:[{
         token:{type:String}

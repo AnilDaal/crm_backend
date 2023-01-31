@@ -42,34 +42,34 @@ const adminLogout = async (req,res)=>{
     res.status(502).json({message:error})
 }
 }
-const adminSignup = async (req,res)=>{
-    const {name,email,password} = req.body
-    try {
-        const existedAdmin = await Admin.findOne({email})
-        if(existedAdmin){
-            return res.status(401).json({message:"all ready user existed"})
-        }
-    const salt  = await bcrypt.genSalt(10)
-    const passwordHash = await bcrypt.hash(password,salt)
-    const adminData = await Admin.create({
-        name,
-        email,
-        password:passwordHash
-    })
-    // const token = await jwt.sign({id: adminData._id},process.env.Secretkey)
-    res.status(201).json(adminData)
-} catch (error) {
-        res.status(501).json({message:error})
-}
-}
+// const adminSignup = async (req,res)=>{
+//     const {name,email,password} = req.body
+//     try {
+//         const existedAdmin = await Admin.findOne({email})
+//         if(existedAdmin){
+//             return res.status(401).json({message:"all ready user existed"})
+//         }
+//     const salt  = await bcrypt.genSalt(10)
+//     const passwordHash = await bcrypt.hash(password,salt)
+//     const adminData = await Admin.create({
+//         name,
+//         email,
+//         password:passwordHash
+//     })
+//     // const token = await jwt.sign({id: adminData._id},process.env.Secretkey)
+//     res.status(201).json(adminData)
+// } catch (error) {
+//         res.status(501).json({message:error})
+// }
+// }
 
-const getAdmin = async(req,res)=>{
-    try {
-        const adminData = await Admin.find({})
-        res.status(201).json(adminData)
-    } catch (error) {
-        res.status(501).json(error)
-    }
-}
+// const getAdmin = async(req,res)=>{
+//     try {
+//         const adminData = await Admin.find({})
+//         res.status(201).json(adminData)
+//     } catch (error) {
+//         res.status(501).json(error)
+//     }
+// }
 
-export default {adminLogin ,adminLogout,adminSignup,getAdmin}
+export default {adminLogin ,adminLogout}
