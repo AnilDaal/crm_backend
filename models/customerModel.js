@@ -29,11 +29,15 @@ const CustomerSchema = new mongoose.Schema({
     },
     country:{
         type:String,
-        enum:["India","Usa","Uk","Dubai","Germany"],
+        enum:["India","USA","UK","Dubai","Germany"],
         required:true
     },
     address:{
         type:String,
+        required:true
+    },
+    isAdmin:{
+        type:Boolean,
         required:true
     }
 })

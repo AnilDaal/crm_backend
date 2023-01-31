@@ -43,7 +43,7 @@ import jwt from "jsonwebtoken"
 //     }
 // }
 const addEmployee = async function(req,res){
-    const {name,email,phone,role,address,country,password} = req.body
+    const {name,email,phone,role,address,country,password,isAdmin} = req.body
     if(!name || !email || !password || !role || !phone || !country || !address)
     return res.status(401).json({message:"Please fill mandatory field"})
     try {
@@ -56,6 +56,7 @@ const addEmployee = async function(req,res){
             role,
             address,
             country,
+            isAdmin,
             password:hashPassword
         })
         // const employeeData = await employee.save()
@@ -87,7 +88,7 @@ const getSingleEmployee = async (req,res)=>{
     }
 }
 const updateEmployee = async(req,res)=>{
-    const {name,email,phone,role,address,country,password} = req.body
+    const {name,email,phone,role,address,country,password,isAdmin} = req.body
     if(!name || !email || !password || !role || !phone || !country || !address)
     return res.status(401).json({message:"Please fill mandatory field"})
     try {
@@ -101,6 +102,7 @@ const updateEmployee = async(req,res)=>{
             role,
             address,
             country,
+            isAdmin,
             password:hashPassword
         }},{new:true})
         res.status(201).json(updateEmp)

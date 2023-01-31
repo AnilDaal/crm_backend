@@ -27,7 +27,11 @@ const adminSchema = new mongoose.Schema({
         token:{
             type:String
         }
-    }]
+    }],
+    isAdmin:{
+        type:Boolean,
+        required:true
+    }
 })
 
 // adminSchema.methods.generateToken = async function(){

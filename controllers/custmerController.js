@@ -1,6 +1,6 @@
 import Customer from"../models/customerModel.js"
 const addCustomer = async function(req,res){
-    const {name,email,date,status,phone,country,address} = req.body
+    const {name,email,date,status,phone,country,address,isAdmin} = req.body
     if(!name || !email || !date || !status || !phone || !country || !address)
     return res.status(401).json({message:"Please fill mandatory field"})
     try {
@@ -11,6 +11,7 @@ const addCustomer = async function(req,res){
             status,
             phone,
             country,
+            isAdmin,
             address
         })         
         res.status(201).json(addCust)
@@ -42,7 +43,7 @@ const getSingleCustomer= async function(req,res){
 
 const updateCustomer = async(req,res)=>{
     const {name,email,date,status,phone,country,address} = req.body
-    if(!name || !email || !date || !status || !phone || !country || !address)
+    if(!name || !email || !date || !status || !phone || !country || !address || !isAdmin)
     return res.status(401).json({message:"Please fill mandatory field"})
     try {
         const customerId = req.params.customerId
@@ -53,6 +54,7 @@ const updateCustomer = async(req,res)=>{
             status,
             phone,
             country,
+            isAdmin,
             address
         }},{new:true})
         res.status(201).json(updateCust)

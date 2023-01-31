@@ -46,12 +46,16 @@ const EmploySchema = new mongoose.Schema({
     },
     country:{
         type:String,
-        enum:["India","Uk","Germany","Dubai","Usa"],
+        enum:["India","UK","Germany","Dubai","USA"],
         required:true
     },
     tokens:[{
         token:{type:String}
-    }]    
+    }],
+    isAdmin:{
+        type:Boolean,
+        required:true
+    }
 })
 // EmploySchema.pre("save",async function(next){
 //     const salt = await bcrypt.genSalt(10)
@@ -59,5 +63,15 @@ const EmploySchema = new mongoose.Schema({
 //     // this.address = undefined
 //     next()
 // })
+
+// schema.methods.setPassword = function setPassword (pwd, confirm) {
+//     if (pwd === confirm) {
+//       this.password = pwd;
+//       return true;
+//     } else {
+//       this.invalidate('password', new Error('Password mismatch'));
+//       return false;
+//        }}
+
 const Employee = mongoose.model("Employee",EmploySchema)
 export default Employee

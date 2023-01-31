@@ -13,6 +13,6 @@ router.post('/admin/login',adminController.adminLogin)
 router.post('/admin/logout',auth.authAdmin,adminController.adminLogout)
 
 // add admin signup
-// router.post('/admin/signup',adminController.adminSignup)
+router.post('/admin/signup',adminController.adminSignup)
 
 export default router
