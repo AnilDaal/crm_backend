@@ -3,7 +3,9 @@ import Task from "../models/taskModel.js"
 const addTask = async(req,res)=>{
     const {description,assigndate,deadline,title} = req.body
     if(!description || !assigndate || !deadline || !title)
+    {
     return res.status(401).json({message:"please fill all mandatory field"})
+    }
     try {
         const employeeId = req.params.employeeId
         const task = await Task.create({
