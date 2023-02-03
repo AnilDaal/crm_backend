@@ -53,8 +53,7 @@ const EmploySchema = new mongoose.Schema({
         token:{type:String}
     }],
     isAdmin:{
-        type:Boolean,
-        required:true
+        type:Boolean
     }
 })
 // EmploySchema.pre("save",async function(next){
