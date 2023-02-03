@@ -37,8 +37,7 @@ const CustomerSchema = new mongoose.Schema({
         required:true
     },
     isAdmin:{
-        type:Boolean,
-        required:true
+        type:Boolean
     }
 })
 const Customer = mongoose.model("Customer",CustomerSchema)
