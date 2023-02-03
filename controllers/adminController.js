@@ -5,7 +5,9 @@ import jwt from "jsonwebtoken"
 const adminLogin = async (req,res)=>{
     const {email,password} = req.body
     if(!email || !password)
+    {
     return res.status(401).json({message:"Enter email and password"})
+    }
     try {
         //for updating data we are using admin values
         const adminData = await Admin.findOne({email})
@@ -14,7 +16,9 @@ const adminLogin = async (req,res)=>{
         }  
         const hashPassword = await bcrypt.compare(password, adminData.password)
         if(!hashPassword)
+        {
         return res.status(404).json({message:"password wrong"})
+        }
         // token generate
         // const token = await adminData.generateToken()
         // const adminId = adminData._id
@@ -45,7 +49,9 @@ const adminLogout = async (req,res)=>{
 const adminSignup = async (req,res)=>{
     const {name,email,password,isAdmin} = req.body
     if(!name || !email || !password )
+    {
     return res.status(401).json({message:"Please fill mandatory field"})
+    }
     try {
         const existedAdmin = await Admin.findOne({email})
         if(existedAdmin){
