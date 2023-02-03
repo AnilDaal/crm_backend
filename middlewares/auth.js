@@ -30,8 +30,9 @@ const authEmp = async (req,res,next)=>{
             req.employeeId = employeeData.id
             req.employee = employeeData.user
         }
-        else
+        else{
         return res.status(402).json({message:"token not found"})
+        }
         next()
     } catch (error) {
         res.status(501).json({message:error})
@@ -46,8 +47,9 @@ const authBoth = async (req,res,next)=>{
             req.userId = userData.id
             req.user = userData.user
         }
-        else 
+        else {
         return res.status(401).json({message:"token not found"})
+        }
         next()
     } 
     catch (error) {
