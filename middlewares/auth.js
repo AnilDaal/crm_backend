@@ -42,7 +42,7 @@ const authBoth = async (req,res,next)=>{
     try {
         const token=req.headers.authorization.split(" ")[1]
         if(token){
-            const userData = jwt.varify(token,process.env.Secretkey)
+            const userData = jwt.verify(token,process.env.Secretkey)
             req.userId = userData.id
             req.user = userData.user
         }
