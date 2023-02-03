@@ -1,7 +1,7 @@
 import Customer from"../models/customerModel.js"
 const addCustomer = async function(req,res){
     const {name,email,date,status,phone,country,address,isAdmin} = req.body
-    if(!name || !email || !date || !status || !phone || !country || !address)
+    if(!name || !email || !phone || !country || !address)
     {
     return res.status(401).json({message:"Please fill mandatory field"})
     }
