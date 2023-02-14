@@ -46,17 +46,8 @@ const getSingleCustomer = async function (req, res) {
 };
 
 const updateCustomer = async (req, res) => {
-  const { name, email, date, status, phone, country, address } = req.body;
-  if (
-    !name ||
-    !email ||
-    !date ||
-    !status ||
-    !phone ||
-    !country ||
-    !address ||
-    !isAdmin
-  ) {
+  const { name, email, status, phone, country, address } = req.body;
+  if (!name || !email || !phone || !country || !address) {
     return res.status(401).json({ message: "Please fill mandatory field" });
   }
   try {
@@ -67,11 +58,9 @@ const updateCustomer = async (req, res) => {
         $set: {
           name,
           email,
-          date,
           status,
           phone,
           country,
-          isAdmin,
           address,
         },
       },

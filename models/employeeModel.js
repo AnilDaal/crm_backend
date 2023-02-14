@@ -22,7 +22,7 @@ const EmploySchema = new mongoose.Schema({
   phone: {
     type: String,
     validate(value) {
-      if (!validator.isMobilePhone(value, ["en-IN", "de-DE"]))
+      if (!validator.isMobilePhone(value))
         throw new Error("enter valid length phone number");
     },
     required: true,

@@ -33,6 +33,13 @@ const getTask = async (req, res) => {
   }
 };
 
+// const moveTask = async (req, res) => {
+//   const employeeId = req.params.employeeId;
+//   try {
+//     const taskData = await Task.findById(employeeId);
+//   } catch (error) {}
+// };
+
 export default {
   getTask,
   addTask,

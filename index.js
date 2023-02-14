@@ -31,10 +31,10 @@ mongoose.connect(process.env.Mongo_Data, () => {
   console.log("mongoose connected");
 });
 
-app.use("/api/v1/employee", employeeRoute);
-app.use("/api/v1/admin", adminRoute);
-app.use("/api/v1/customer", customerRoute);
-app.get("/api/v1", (req, res) => {
+app.use("/api/employee", employeeRoute);
+app.use("/api/admin", adminRoute);
+app.use("/api/customer", customerRoute);
+app.get("/api", (req, res) => {
   res.status(201).json({ message: "hello world" });
 });
 

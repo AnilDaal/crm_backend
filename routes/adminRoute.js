@@ -10,7 +10,7 @@ const router = new express.Router();
 router.post("/login", adminController.adminLogin);
 
 // admin logout
-router.post("/logout", auth.authAdmin, adminController.adminLogout);
+// router.post("/logout", auth.authAdmin, adminController.adminLogout);
 
 // add admin signup
 router.post("/signup", adminController.adminSignup);
