@@ -44,8 +44,9 @@ import jwt from "jsonwebtoken";
 const addEmployee = async function (req, res) {
   const { name, email, phone, role, address, country, password, isAdmin } =
     req.body;
-  if (!name || !email || !password || !role || !phone || !country || !address)
+  if (!name || !email || !password || !role || !phone || !country || !address) {
     return res.status(401).json({ message: "Please fill mandatory field" });
+  }
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -62,36 +63,39 @@ const addEmployee = async function (req, res) {
     // const employeeData = await employee.save()
     res.status(201).json(addEmp);
   } catch (error) {
-    res.status(501).json({ message: error });
+    res.status(501).json({ message: error.message });
   }
 };
 
 const getEmployee = async (req, res) => {
   try {
     const getEmp = await Employee.find();
-    if (!getEmp)
+    if (!getEmp) {
       return res.status(201).json({ message: "please add employees" });
+    }
     res.status(201).json(getEmp);
   } catch (error) {
-    res.status(503).json({ message: error });
+    res.status(503).json({ message: error.message });
   }
 };
 const getSingleEmployee = async (req, res) => {
   try {
     const employeeId = req.params.employeeId;
     const getSingleEmp = await Employee.findById(employeeId);
-    if (!getSingleEmp)
+    if (!getSingleEmp) {
       return res.status(401).json({ message: "please enter a valid employee" });
+    }
     res.status(201).json(getSingleEmp);
   } catch (error) {
-    res.status(501).json({ message: error });
+    res.status(501).json({ message: error.message });
   }
 };
 const updateEmployee = async (req, res) => {
   const { name, email, phone, role, address, country, password, isAdmin } =
     req.body;
-  if (!name || !email || !password || !role || !phone || !country || !address)
+  if (!name || !email || !password || !role || !phone || !country || !address) {
     return res.status(401).json({ message: "Please fill mandatory field" });
+  }
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -114,18 +118,19 @@ const updateEmployee = async (req, res) => {
     );
     res.status(201).json(updateEmp);
   } catch (error) {
-    res.status(501).json({ message: error });
+    res.status(501).json({ message: error.message });
   }
 };
 const deleteEmployee = async (req, res) => {
   try {
     const employeeId = req.params.employeeId;
-    if (!employeeId)
+    if (!employeeId) {
       return res.status(401).json({ message: "please enter a valid employee" });
+    }
     const deleteEmp = await Employee.findByIdAndDelete(employeeId);
     res.status(201).json(deleteEmp);
   } catch (error) {
-    res.status(501).json({ message: error });
+    res.status(501).json({ message: error.message });
   }
 };
 // const singupEmployee = async (req,res)=>{
@@ -155,16 +160,18 @@ const deleteEmployee = async (req, res) => {
 // }
 const loginEmployee = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password)
+  if (!email || !password) {
     return res.status(401).json({ message: "Enter email or password" });
+  }
   try {
     const userData = await Employee.findOne({ email });
-    if (!userData)
-      return res.status(404).json({ message: "user and password wrong" });
+    if (!userData) {
+      return res.status(404).json({ message: "wrong user " });
+    }
     const hashPassword = await bcrypt.compare(password, userData.password);
-    if (!hashPassword)
-      return res.status(404).json({ message: "user and password wrong" });
-
+    if (!hashPassword) {
+      return res.status(404).json({ message: "password wrong" });
+    }
     // token generate
     const token = await jwt.sign(
       { id: userData._id, user: userData },
@@ -176,7 +183,7 @@ const loginEmployee = async (req, res) => {
     // res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
     res.status(201).send({ token });
   } catch (error) {
-    res.status(501).json({ message: error });
+    res.status(501).json({ message: error.message });
   }
 };
 
@@ -189,7 +196,7 @@ const logout = async (req, res) => {
     // res.clearCookie("CRM_Emp")
     res.status(201).json({ message: "logout done.." }).end();
   } catch (error) {
-    res.status(504).json({ message: error });
+    res.status(504).json({ message: error.message });
   }
 };
 

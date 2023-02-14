@@ -1,61 +1,64 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 // import bcrypt from "bcrypt"
-import validator from "validator"
+import validator from "validator";
 const EmploySchema = new mongoose.Schema({
-    name:{
-        type:String,
-        trim:true,
-        required:true 
+  name: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: [true, "enter unique email"],
+    validate: {
+      validator: function (value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Not a valid Email");
+        }
+      },
+      required: true,
     },
-    email:{
-        type:String,
-        unique: [true,"enter unique email"],
-        validate:{
-            validator:function(value){
-            if(!validator.isEmail(value)){
-                throw new Error("Not a valid Email")
-            }
-        },
-        required:true
-    }
+  },
+  phone: {
+    type: String,
+    validate(value) {
+      if (!validator.isMobilePhone(value, ["en-IN", "de-DE"]))
+        throw new Error("enter valid length phone number");
     },
-    phone:{
-        type:String,
-        validate(value){
-            if(!validator.isMobilePhone(value,['en-IN','de-DE',]))
-            throw new Error("enter valid length phone number")
-        },
-        required:true
+    required: true,
+  },
+  password: {
+    type: String,
+    validate(value) {
+      if (!validator.isStrongPassword(value))
+        throw new Error("enter strong password");
     },
-    password:{
-        type:String,
-        validate(value){
-            if(!validator.isStrongPassword(value))
-            throw new Error("enter strong password")
-        },
-        required:true
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ["Operation", "Sales", "Account"],
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    enum: ["India", "UK", "Germany", "Dubai", "USA"],
+    required: true,
+  },
+  tokens: [
+    {
+      token: { type: String },
     },
-    role:{
-        type:String,
-        enum:["Operation","Sales","Account"],
-        required:true
-    },
-    address:{
-        type:String,
-        required:true
-    },
-    country:{
-        type:String,
-        enum:["India","UK","Germany","Dubai","USA"],
-        required:true
-    },
-    tokens:[{
-        token:{type:String}
-    }],
-    isAdmin:{
-        type:Boolean
-    }
-})
+  ],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+});
 // EmploySchema.pre("save",async function(next){
 //     const salt = await bcrypt.genSalt(10)
 //     this.password = await bcrypt.hash(this.password,salt)
@@ -72,5 +75,5 @@ const EmploySchema = new mongoose.Schema({
 //       return false;
 //        }}
 
-const Employee = mongoose.model("Employee",EmploySchema)
-export default Employee
+const Employee = mongoose.model("Employee", EmploySchema);
+export default Employee;
