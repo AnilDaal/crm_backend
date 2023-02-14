@@ -32,9 +32,9 @@ mongoose.connect(process.env.Mongo_Data, () => {
 });
 
 app.use("/api/v1/employee", employeeRoute);
-app.use("api/v1/admin", adminRoute);
-app.use("api/v1/customer", customerRoute);
-app.get("/api/v1/", (req, res) => {
+app.use("/api/v1/admin", adminRoute);
+app.use("/api/v1/customer", customerRoute);
+app.get("/api/v1", (req, res) => {
   res.status(201).json({ message: "hello world" });
 });
 
