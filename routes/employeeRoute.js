@@ -10,7 +10,7 @@ const router = express.Router();
 router
   .route("/")
   .get(auth.authAdmin, employeeController.getEmployee)
-  .post(employeeController.addEmployee);
+  .post(auth.authAdmin, employeeController.addEmployee);
 
 // read employee
 // router.get('/employee',auth.authAdmin,employeeController.getEmployee)

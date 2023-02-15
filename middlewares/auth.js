@@ -23,7 +23,7 @@ const authEmp = async (req, res, next) => {
     // const token = req.cookies.CRM_Emp
     let token = req.headers.authorization.split(" ")[1];
     if (token) {
-      const employeeData = jwt.verify(token, process.env.Secretkey);
+      const employeeData = jwt.verify(token, process.env.SecretkeyEmp);
 
       req.employeeId = employeeData.id;
       req.employee = employeeData.user;

@@ -15,7 +15,7 @@ router
 // router.get("/customer/:customerId", customerController.getSingleCustomer);
 router
   .route("/:customerId")
-  .get(customerController.getSingleCustomer)
+  .get(auth.authBoth, customerController.getSingleCustomer)
   .put(auth.authBoth, customerController.updateCustomer)
   .delete(auth.authBoth, customerController.deleteCustomer);
 // update customer

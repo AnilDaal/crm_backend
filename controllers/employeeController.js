@@ -175,13 +175,13 @@ const loginEmployee = async (req, res) => {
     // token generate
     const token = await jwt.sign(
       { id: userData._id, user: userData },
-      process.env.Secretkey,
+      process.env.SecretkeyEmp,
       {
-        expiresIn: "1d",
+        expiresIn: "5d",
       }
     );
     // res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
-    res.status(201).send({ token });
+    res.status(201).json(token);
   } catch (error) {
     res.status(501).json({ message: error.message });
   }
