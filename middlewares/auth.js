@@ -39,8 +39,14 @@ const authEmp = async (req, res, next) => {
 const authBoth = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
+    let userData;
     if (token) {
-      const userData = jwt.verify(token, process.env.Secretkey);
+      if (jwt.verify(token, process.env.Secretkey)) {
+        userData = jwt.verify(token, process.env.Secretkey);
+      } else {
+        userData = jwt.verify(token, process.env.SecretkeyEmp);
+      }
+      console.log("ok2");
       req.userId = userData.id;
       req.user = userData.user;
     } else {
