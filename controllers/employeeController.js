@@ -172,7 +172,7 @@ const loginEmployee = async (req, res) => {
     if (!hashPassword) {
       return res.status(404).json({ message: "password wrong" });
     }
-    // token generate
+    // token generated
     const token = await jwt.sign(
       { id: userData._id, user: userData },
       process.env.SecretkeyEmp,
