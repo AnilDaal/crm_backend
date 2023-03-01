@@ -69,7 +69,7 @@ const addEmployeeCustomer = async (req, res) => {
 const getEmployeeCustomer = async function (req, res) {
   const employeeId = req.params.employeeId;
   try {
-    const getCust = await Customer.findById(employeeId);
+    const getCust = await Customer.find({ employeeId });
     if (!getCust) {
       return res.status(401).json({ message: "please enter a valid customer" });
     }

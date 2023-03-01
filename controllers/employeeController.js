@@ -91,9 +91,7 @@ const getSingleEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
   const { name, email, phone, role, address, country, password } = req.body;
   const employeeId = req.params.employeeId;
-  if (!name || !email || !password || !role || !phone || !country || !address) {
-    return res.status(401).json({ message: "Please fill mandatory field" });
-  }
+
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
