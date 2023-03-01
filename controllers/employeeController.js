@@ -91,7 +91,6 @@ const getSingleEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
   const { name, email, phone, role, address, country, password } = req.body;
   const employeeId = req.params.employeeId;
-
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -110,6 +109,11 @@ const updateEmployee = async (req, res) => {
       },
       { new: true }
     );
+    if (!updateEmp) {
+      return res.status(401).json({
+        message: "please enter valid employee ",
+      });
+    }
     res.status(201).json(updateEmp);
   } catch (error) {
     res.status(501).json({ message: error.message });

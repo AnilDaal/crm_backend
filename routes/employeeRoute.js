@@ -6,26 +6,16 @@ import custmerController from "../controllers/custmerController.js";
 
 const router = express.Router();
 
-// create employee
-// router.post('/employee',employeeController.addEmployee)
 router
   .route("/")
   .get(auth.authAdmin, employeeController.getEmployee)
   .post(auth.authAdmin, employeeController.addEmployee);
 
-// read employee
-// router.get('/employee',auth.authAdmin,employeeController.getEmployee)
-// router.get(
-//   "/employee/:employeeId",
-//   auth.authAdmin,
-//   employeeController.getSingleEmployee
-// );
 router
   .route("/:employeeId")
   .get(auth.authAdmin, employeeController.getSingleEmployee)
   .put(auth.authAdmin, employeeController.updateEmployee)
   .delete(auth.authAdmin, employeeController.deleteEmployee);
-// router.get('employee/varify/:employeeId',employeeController.varifymail)
 
 router
   .route("/:employeeId/customer")
@@ -35,12 +25,6 @@ router
   .route("/:employeeId/customer/:customerId")
   .put(auth.authEmp, custmerController.updateEmployeeCustomer)
   .delete(auth.authEmp, custmerController.deleteEmployeeCustomer);
-// update employee
-// router.put(
-//   "/employee/:employeeId",
-//   auth.authAdmin,
-//   employeeController.updateEmployee
-// );
 
 // asign task to employee
 router

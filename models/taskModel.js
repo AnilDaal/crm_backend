@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Employee from "./employeeModel.js";
+import mongooseUniqueArray from "mongoose-unique-array";
 
 const taskSchema = mongoose.Schema({
   task: [
@@ -26,13 +26,10 @@ const taskSchema = mongoose.Schema({
   employeeId: {
     type: String,
   },
-  teamMate: [
-    {
-      type: String,
-    },
-  ],
+  teamMate: [{ type: String, unique: true }],
 });
 
+taskSchema.plugin(mongooseUniqueArray);
 const Task = mongoose.model("Task", taskSchema);
 
 export default Task;

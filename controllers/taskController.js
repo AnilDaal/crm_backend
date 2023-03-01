@@ -54,14 +54,15 @@ const getEmployeeTask = async (req, res) => {
 };
 
 const updateEmployeeTask = async (req, res) => {
-  const { description, assigndate, deadline, title, status } = req.body;
-  const employeeId = req.params.employeeId;
+  const { description, assigndate, deadline, teamMate, title, status } =
+    req.body;
+  const { employeeId, taskId } = req.params;
   if (!description || !assigndate || !deadline || !title || !status) {
     return res.status(401).json({ message: "please fill all mandatory field" });
   }
   try {
     const taskData = await Task.findByIdAndUpdate(
-      { employeeId },
+      taskId,
       {
         $set: {
           task: [
@@ -74,6 +75,7 @@ const updateEmployeeTask = async (req, res) => {
           ],
           employeeId,
           status,
+          teamMate: teamMate,
         },
       },
       { new: true }
