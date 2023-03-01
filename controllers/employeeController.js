@@ -177,14 +177,12 @@ const loginEmployee = async (req, res) => {
         expiresIn: "5d",
       }
     );
-    res
-      .cookie("CRM_Emp", token, {
-        expires: new Date(Date.now() + 1000 * 3600),
-        httpOnly: true,
-      })
-      .status(201)
-      .json(token);
-    // res.status(201).json(token);
+    res.cookie("CRM_Emp", token, {
+      expires: new Date(Date.now() + 1000 * 3600),
+      httpOnly: true,
+    });
+
+    res.status(201).json(token);
   } catch (error) {
     res.status(501).json({ message: error.message });
   }
