@@ -28,26 +28,29 @@ const adminLogin = async (req, res) => {
     // await adminData.updateOne({$push:{
     //     tokens:{
     //         $each:[{token:token}]}}},{new:true})
-    // res.cookie("CRM_Admin",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
+    res.cookie("CRM_Admin", token, {
+      expires: new Date(Date.now() + 1000 * 3600 * 24 * 10),
+      httpOnly: true,
+    });
     res.status(201).json(token);
   } catch (error) {
     res.status(501).json({ message: error.message });
   }
 };
 
-// const adminLogout = async (req,res)=>{
-//     try{
-//     req.admin.tokens = await req.admin.tokens.filter((elem)=>{
-//         return elem.token != req.adminId
-//     })
-//     // await req.admin.save()
-//     // res.clearCookie("CRM_Admin")
-//     res.status(201).json({message:"logout done.."}).end()
-// }
-//  catch(error) {
-//     res.status(502).json({message:error})
-// }
-// }
+const adminLogout = async (req, res) => {
+  try {
+    // req.admin.tokens = await req.admin.tokens.filter((elem)=>{
+    //     return elem.token != req.adminId
+    // })
+    // await req.admin.save()
+    res.clearCookie("CRM_Admin");
+    res.status(201).json({ message: "logout done.." }).end();
+  } catch (error) {
+    res.status(502).json({ message: error });
+  }
+};
+
 const adminSignup = async (req, res) => {
   const { name, email, password, isAdmin } = req.body;
   if (!name || !email || !password) {
@@ -82,4 +85,4 @@ const adminSignup = async (req, res) => {
 //     }
 // }
 
-export default { adminLogin, adminSignup };
+export default { adminLogin, adminLogout };

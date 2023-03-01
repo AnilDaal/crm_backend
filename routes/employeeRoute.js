@@ -2,6 +2,7 @@ import express from "express";
 import employeeController from "../controllers/employeeController.js";
 import auth from "../middlewares/auth.js";
 import taskController from "../controllers/taskController.js";
+import custmerController from "../controllers/custmerController.js";
 
 const router = express.Router();
 
@@ -26,6 +27,14 @@ router
   .delete(auth.authAdmin, employeeController.deleteEmployee);
 // router.get('employee/varify/:employeeId',employeeController.varifymail)
 
+router
+  .route("/:employeeId/customer")
+  .post(auth.authEmp, custmerController.addEmployeeCustomer)
+  .get(auth.authEmp, custmerController.getEmployeeCustomer);
+router
+  .route("/:employeeId/customer/:customerId")
+  .put(auth.authEmp, custmerController.updateEmployeeCustomer)
+  .delete(auth.authEmp, custmerController.deleteEmployeeCustomer);
 // update employee
 // router.put(
 //   "/employee/:employeeId",
@@ -34,11 +43,20 @@ router
 // );
 
 // asign task to employee
-router.post("/:employeeId/addTask", auth.authAdmin, taskController.addTask);
+router
+  .route("/:employeeId/addTask")
+  .post(auth.authAdmin, taskController.addTask);
 
 // get task for employee
-router.get("/:employeeId/getTask", auth.authBoth, taskController.getTask);
+router.route("/:employeeId/getTask").get(taskController.getEmployeeTask);
+// add team mates
+router
+  .route("/:employeeId/addTeamMate/:taskId")
+  .put(auth.authAdmin, taskController.addTeamMate);
 
+router
+  .route("/:employeeId/updateTask/:taskId")
+  .put(auth.authAdmin, taskController.updateEmployeeTask);
 // delete employee
 // router.delete(
 //   "/employee/:employeeId",
@@ -50,8 +68,8 @@ router.get("/:employeeId/getTask", auth.authBoth, taskController.getTask);
 // router.post('/employee/signup',employeeController.singupEmployee)
 
 //login
-router.post("/login", employeeController.loginEmployee);
+router.route("/login").post(employeeController.loginEmployee);
 
 //logout
-router.post("/logout", auth.authEmp, employeeController.logout);
+// router.route("/logout").post(auth.authEmp, employeeController.logout);
 export default router;

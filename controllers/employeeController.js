@@ -70,36 +70,33 @@ const addEmployee = async function (req, res) {
 const getEmployee = async (req, res) => {
   try {
     const getEmp = await Employee.find();
-    if (!getEmp) {
-      return res.status(201).json({ message: "please add employees" });
-    }
     res.status(201).json(getEmp);
   } catch (error) {
     res.status(503).json({ message: error.message });
   }
 };
 const getSingleEmployee = async (req, res) => {
+  const employeeId = req.params.employeeId;
   try {
-    const employeeId = req.params.employeeId;
     const getSingleEmp = await Employee.findById(employeeId);
     if (!getSingleEmp) {
-      return res.status(401).json({ message: "please enter a valid employee" });
+      return res.status(401).json({ message: "invalid employee id" });
     }
     res.status(201).json(getSingleEmp);
   } catch (error) {
-    res.status(501).json({ message: error.message });
+    res.status(401).json({ message: error.message });
   }
 };
+
 const updateEmployee = async (req, res) => {
-  const { name, email, phone, role, address, country, password, isAdmin } =
-    req.body;
+  const { name, email, phone, role, address, country, password } = req.body;
+  const employeeId = req.params.employeeId;
   if (!name || !email || !password || !role || !phone || !country || !address) {
     return res.status(401).json({ message: "Please fill mandatory field" });
   }
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
-    const employeeId = req.params.employeeId;
     const updateEmp = await Employee.findByIdAndUpdate(
       employeeId,
       {
@@ -110,7 +107,6 @@ const updateEmployee = async (req, res) => {
           role,
           address,
           country,
-          isAdmin,
           password: hashPassword,
         },
       },
@@ -121,9 +117,10 @@ const updateEmployee = async (req, res) => {
     res.status(501).json({ message: error.message });
   }
 };
+
 const deleteEmployee = async (req, res) => {
+  const employeeId = req.params.employeeId;
   try {
-    const employeeId = req.params.employeeId;
     if (!employeeId) {
       return res.status(401).json({ message: "please enter a valid employee" });
     }
@@ -180,20 +177,26 @@ const loginEmployee = async (req, res) => {
         expiresIn: "5d",
       }
     );
-    // res.cookie("CRM_Emp",token,{expires:new Date(Date.now()+1000*3600),httpOnly:true})
-    res.status(201).json(token);
+    res
+      .cookie("CRM_Emp", token, {
+        expires: new Date(Date.now() + 1000 * 3600),
+        httpOnly: true,
+      })
+      .status(201)
+      .json(token);
+    // res.status(201).json(token);
   } catch (error) {
     res.status(501).json({ message: error.message });
   }
 };
 
-const logout = async (req, res) => {
+const employeeLogout = async (req, res) => {
   try {
-    req.employee.tokens = await req.employee.tokens.filter((elem) => {
-      return elem.token != req.employeeId;
-    });
+    // req.employee.tokens = await req.employee.tokens.filter((elem) => {
+    //   return elem.token != req.employeeId;
+    // });
     // await req.employee.save()
-    // res.clearCookie("CRM_Emp")
+    res.clearCookie("CRM_Emp");
     res.status(201).json({ message: "logout done.." }).end();
   } catch (error) {
     res.status(504).json({ message: error.message });
@@ -207,5 +210,5 @@ export default {
   getEmployee,
   getSingleEmployee,
   loginEmployee,
-  logout,
+  employeeLogout,
 };

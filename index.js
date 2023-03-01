@@ -35,7 +35,7 @@ app.use("/api/employee", employeeRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/customer", customerRoute);
 app.get("/api", (req, res) => {
-  res.status(201).json({ message: "hello world" });
+  res.status(201).json({ message: "hello India" });
 });
 
 app.listen(port, () => {

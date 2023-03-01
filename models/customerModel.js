@@ -5,10 +5,13 @@ const CustomerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  employeeId: String,
   email: {
     type: String,
     validate(value) {
-      if (!validator.isEmail(value)) throw new Error("Enter a valid email ");
+      if (!validator.isEmail(value)) {
+        throw new Error("Enter a valid email ");
+      }
     },
   },
   date: {
@@ -22,8 +25,9 @@ const CustomerSchema = new mongoose.Schema({
   phone: {
     type: String,
     validate(value) {
-      if (!validator.isMobilePhone(value))
+      if (!validator.isMobilePhone(value)) {
         throw new Error("Enter valid mobile number");
+      }
     },
     required: true,
   },

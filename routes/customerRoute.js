@@ -7,17 +7,17 @@ const router = express.Router();
 // add customer
 router
   .route("/")
-  .post(auth.authBoth, customerController.addCustomer)
-  .get(auth.authBoth, customerController.getCustomer);
+  .post(auth.authAdmin, customerController.addCustomer)
+  .get(auth.authAdmin, customerController.getCustomer);
 
 // get customer
 // router.get('/customer',auth.authBoth,customerController.getCustomer)
 // router.get("/customer/:customerId", customerController.getSingleCustomer);
 router
   .route("/:customerId")
-  .get(auth.authBoth, customerController.getSingleCustomer)
-  .put(auth.authBoth, customerController.updateCustomer)
-  .delete(auth.authBoth, customerController.deleteCustomer);
+  .get(auth.authAdmin, customerController.getSingleCustomer)
+  .put(auth.authAdmin, customerController.updateCustomer)
+  .delete(auth.authAdmin, customerController.deleteCustomer);
 // update customer
 // router.put('/customer/:customerId',auth.authBoth,customerController.updateCustomer)
 

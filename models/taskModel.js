@@ -21,10 +21,16 @@ const taskSchema = mongoose.Schema({
   status: {
     type: String,
     enum: ["comming", "completed", "running"],
+    default: "comming",
   },
   employeeId: {
     type: String,
   },
+  teamMate: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const Task = mongoose.model("Task", taskSchema);
